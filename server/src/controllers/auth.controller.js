@@ -26,12 +26,6 @@ export const registerUser = async (req, res) => {
         })
 
         res.status(201).json({
-            institutionId: result.institutionId.toString(),
-            name: result.name,
-            section: result.section,
-            department: result.department,
-            role: result.role,
-            profilePic: result.profilePic,
             message: "USER CREATED"
         })
 
@@ -50,7 +44,17 @@ export const loginUser = async (req, res) => {
 
     try {
 
+        //check for empty fields
+        if (institutionId == "" || password == "") {
+            return res.status(400).json({
+                message: "Please fill all the fields"
+            })
+        }
+
+
         const result = await loginService(institutionId, password);
+
+
 
         //check for error
         if (result.status) {
@@ -64,12 +68,7 @@ export const loginUser = async (req, res) => {
         const jwt = generateToken(result.user.id, res);
 
         res.status(200).json({
-            institutionId: result.user.institutionId.toString(),
-            name: result.name,
-            section: result.section,
-            department: result.department,
-            role: result.role,
-            profilePic: result.profilePic,
+            user: result.user,
             jwt: jwt,
             message: "Login Successful 😍"
         })

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import '../global.css';
+import React, { useState } from "react";
+import "../global.css";
 import {
   View,
   Text,
@@ -7,23 +7,23 @@ import {
   TextInput,
   TouchableOpacity,
   Modal,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const departments = [
-  'Computer Science (CSE)',
-  'Information Technology (IT)',
-  'Electronics & Communication (ECE)',
-  'Mechanical Engineering',
-  'Civil Engineering',
-  'Food Technology',
+  "Computer Science (CSE)",
+  "Information Technology (IT)",
+  "Electronics & Communication (ECE)",
+  "Mechanical Engineering",
+  "Civil Engineering",
+  "Food Technology",
 ];
 
-const roles = ['Student', 'Teacher'];
+const roles = ["Student", "Teacher"];
 
 const SignUp = () => {
-  const [department, setDepartment] = useState('Select Department');
-  const [role, setRole] = useState('Select Role');
+  const [department, setDepartment] = useState("Select Department");
+  const [role, setRole] = useState("Select Role");
 
   const [deptModal, setDeptModal] = useState(false);
   const [roleModal, setRoleModal] = useState(false);
@@ -34,7 +34,6 @@ const SignUp = () => {
         contentContainerStyle={{ padding: 24 }}
         showsVerticalScrollIndicator={false}
       >
-
         {/* Header */}
         <View className="items-center mt-6 mb-8">
           <View className="w-32 h-32 rounded-full bg-primary/15 items-center justify-center">
@@ -67,7 +66,7 @@ const SignUp = () => {
         </TouchableOpacity>
 
         {/* STUDENT FIELDS */}
-        {role === 'Student' && (
+        {role === "Student" && (
           <>
             {/* Roll Number */}
             <View className="bg-card border border-border rounded-2xl px-4 py-4 mb-4">
@@ -100,28 +99,28 @@ const SignUp = () => {
 
         {/* TEACHER FIELDS */}
         {/* TEACHER FIELDS */}
-{role === 'Teacher' && (
-  <>
-    {/* Institution / Employee ID */}
-    <View className="bg-card border border-border rounded-2xl px-4 py-4 mb-4">
-      <TextInput
-        placeholder="Institution / Employee ID"
-        placeholderTextColor="#6b7280"
-        className="text-foreground"
-      />
-    </View>
+        {role === "Teacher" && (
+          <>
+            {/* Institution / Employee ID */}
+            <View className="bg-card border border-border rounded-2xl px-4 py-4 mb-4">
+              <TextInput
+                placeholder="Institution / Employee ID"
+                placeholderTextColor="#6b7280"
+                className="text-foreground"
+              />
+            </View>
 
-    {/* Phone Number */}
-    <View className="bg-card border border-border rounded-2xl px-4 py-4 mb-4">
-      <TextInput
-        placeholder="Phone Number"
-        placeholderTextColor="#6b7280"
-        keyboardType="phone-pad"
-        className="text-foreground"
-      />
-    </View>
-  </>
-)}
+            {/* Phone Number */}
+            <View className="bg-card border border-border rounded-2xl px-4 py-4 mb-4">
+              <TextInput
+                placeholder="Phone Number"
+                placeholderTextColor="#6b7280"
+                keyboardType="phone-pad"
+                className="text-foreground"
+              />
+            </View>
+          </>
+        )}
 
         {/* Password */}
         <View className="bg-card border border-border rounded-2xl px-4 py-4 mb-3">
@@ -157,7 +156,7 @@ const SignUp = () => {
         {/* Footer */}
         <View className="items-center mt-8">
           <Text className="text-mutedForeground">
-            Already have an account?{' '}
+            Already have an account?{" "}
             <Text className="text-primary font-semibold">Login</Text>
           </Text>
         </View>

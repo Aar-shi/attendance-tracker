@@ -1,8 +1,9 @@
 import { View, Text, Pressable } from "react-native";
 import React from "react";
-import { Tabs, usePathname } from "expo-router";
+import { Redirect, router, Tabs, usePathname } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/theme/colors";
+import { useAppSelector } from "@/redux/hooks/hooks";
 
 export default function MainTabLayout() {
   return (
