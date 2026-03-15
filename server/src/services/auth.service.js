@@ -47,6 +47,8 @@ export const loginService = async (institutionId, password) => {
     }
 
     //add user to response
+    delete user.password;
+    user.institutionId = user.institutionId.toString();
     response.user = user;
 
     return response;
