@@ -42,8 +42,8 @@ const classroomSlice = createSlice({
     }),
     builder.addCase(fetchClassrooms.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.classrooms = action.payload.result;
-      state.classCount = state.classrooms.length;
+      state.classrooms = action.payload?.result;
+      state.classCount = state.classrooms?.length;
       state.errorInFetch = false;
     })),
       builder.addCase(fetchClassrooms.rejected, (state) => {

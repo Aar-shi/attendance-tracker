@@ -13,11 +13,15 @@ import { router } from "expo-router";
 import { ClassItem } from "@/types/classes";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import { fetchClassrooms } from "@/redux/slice/classroomSlice";
+
 export default function ClassScreen() {
   const [classes, setClasses] = useState<ClassItem[]>([]);
   const [isSearchEmpty, setIsSearchEmpty] = useState(true);
   const [searchParams, setSearchParams] = useState<string>();
   const [filteredClasses, setFilteredClasses] = useState<ClassItem[]>([]);
+
+  // ⭐ FAB MENU STATE
+  const [menuVisible, setMenuVisible] = useState(false);
 
   //redux states
   const classrooms: ClassItem[] | null = useAppSelector(
@@ -33,83 +37,16 @@ export default function ClassScreen() {
     handleFetchClassrooms();
   }, []);
 
-  // useEffect(() => {
-  //   // Simulating backend / input data
-  //   setClasses([
-  //     {
-  //       id: "1",
-  //       title: "Digital Communication",
-  //       teacher: "Prof. Moumita Sengupta",
-  //       startTime: "10:00 AM",
-  //       endTime: "11:30 AM",
-  //       studentCount: 34,
-  //     },
-
-  //     {
-  //       id: "2",
-  //       title: "Applied Physics",
-  //       teacher: "Prof. James Miller",
-  //       startTime: "12:00 PM",
-  //       endTime: "01:30 PM",
-  //       studentCount: 28,
-  //     },
-
-  //     {
-  //       id: "3",
-  //       title: "Computer Science",
-  //       teacher: "Dr. Emily Chen",
-  //       startTime: "02:00 PM ",
-  //       endTime: "03:00 PM",
-  //       studentCount: 42,
-  //     },
-  //     {
-  //       id: "4",
-  //       title: "English Literature",
-  //       teacher: "Prof. Robert Brown",
-  //       startTime: "04:00 PM",
-  //       endTime: "05:30 PM",
-  //       studentCount: 64,
-  //     },
-  //     {
-  //       id: "5",
-  //       title: "Computer Science",
-  //       teacher: "Dr. Emily Chen",
-  //       startTime: "02:00 PM ",
-  //       endTime: "03:00 PM",
-  //       studentCount: 42,
-  //     },
-  //     {
-  //       id: "6",
-  //       title: "Advanced Mathematics",
-  //       teacher: "Dr. Sarah Wilson",
-  //       startTime: "10:00 AM",
-  //       endTime: "11:30 AM",
-  //       studentCount: 34,
-  //     },
-  //     {
-  //       id: "7",
-  //       title: "English Literature",
-  //       teacher: "Prof. Robert Brown",
-  //       startTime: "04:00 PM",
-  //       endTime: "05:30 PM",
-  //       studentCount: 64,
-  //     },
-  //   ]);
-  // }, []);
-
   const handleSearch = (text: string) => {
-    //set search
     setSearchParams(text);
-    //check for empty search bar
+
     if (text.length > 0) setIsSearchEmpty(false);
     else setIsSearchEmpty(true);
 
-    //search for classes
     const data: ClassItem[] = classes.filter((item) =>
       item.name.toLowerCase().includes(text.toLowerCase()),
     );
 
-    //set filtered list
     setFilteredClasses(data);
   };
 
@@ -117,22 +54,26 @@ export default function ClassScreen() {
     <SafeAreaView edges={["top"]} className="flex-1 bg-background">
       {/* ---------- HEADER ---------- */}
       <View className="flex-row justify-between items-center px-5 pt-4">
-        <Text className="text-2xl font-bold text-foreground">My Classes</Text>
+        <Text className="text-2xl font-bold text-foreground">
+          My Classes
+        </Text>
 
         <View className="flex-row items-center gap-2 p-1 rounded-lg">
           <Ionicons name="people-outline" size={18} color="black" />
-          <Text className="text-sm text-foreground">Student Mode</Text>
+          <Text className="text-sm text-foreground">
+            Student Mode
+          </Text>
         </View>
       </View>
 
       {/* ---------- SEARCH BAR ---------- */}
       <View className="flex-row items-center px-5 mt-4 mb-1 gap-3">
-        <View className="flex-1 bg-white rounded-xl px-4 py-3 shadow-sm elevation-sm">
+        <View className="flex-1 bg-card rounded-xl px-4 py-3 border border-border">
           <TextInput
             onChangeText={handleSearch}
             placeholder="Search classes..."
             placeholderTextColor="#000"
-            className="text-foreground "
+            className="text-foreground"
           />
         </View>
 
@@ -161,8 +102,7 @@ export default function ClassScreen() {
             }
             className="mb-4 rounded-2xl"
           >
-            <View className="bg-white shadow-lg elevation-lg rounded-2xl p-4 mb-4 ">
-              {/* Title & Icon */}
+            <View className="bg-card border border-border rounded-2xl p-4 mb-4">
               <View className="flex-row justify-between items-center">
                 <View>
                   <Text className="text-lg font-bold text-foreground">
@@ -176,7 +116,6 @@ export default function ClassScreen() {
                 <Ionicons name="people-outline" size={20} color="black" />
               </View>
 
-              {/* Time, Students & Arrow */}
               <View className="flex-row justify-between mt-4">
                 <View className="flex-row items-center gap-2">
                   <Ionicons name="time-outline" size={16} color="black" />
@@ -187,13 +126,11 @@ export default function ClassScreen() {
 
                 <View className="flex-row items-center gap-2">
                   <Ionicons name="people-outline" size={16} color="black" />
-
-                  {/* Student count */}
-                  {/* TODO - TO be updated */}
-                  <Text className="text-sm text-foreground">100 Students</Text>
+                  <Text className="text-sm text-foreground">
+                    100 Students
+                  </Text>
                 </View>
 
-                {/* Arrow Icon */}
                 <Ionicons
                   name="arrow-forward-outline"
                   size={18}
@@ -204,6 +141,54 @@ export default function ClassScreen() {
           </Pressable>
         )}
       />
+
+      {/* ================= FAB MENU ================= */}
+
+      {menuVisible && (
+        <View className="absolute bottom-24 right-6 items-end gap-3">
+          {/* CREATE */}
+          <TouchableOpacity
+            onPress={() => {
+              setMenuVisible(false);
+              router.push({
+                pathname: "/form",
+                params: { type: "create" },
+              });
+            }}
+            className="bg-card px-4 py-3 rounded-xl border border-border shadow-md flex-row items-center gap-2"
+          >
+            <Ionicons name="add-circle-outline" size={20} color="black" />
+            <Text className="text-cardForeground font-medium">
+              Create Class
+            </Text>
+          </TouchableOpacity>
+
+          {/* ENROLL */}
+          <TouchableOpacity
+            onPress={() => {
+              setMenuVisible(false);
+              router.push({
+                pathname: "/form",
+                params: { type: "enroll" },
+              });
+            }}
+            className="bg-card px-4 py-3 rounded-xl border border-border shadow-md flex-row items-center gap-2"
+          >
+            <Ionicons name="school-outline" size={20} color="black" />
+            <Text className="text-cardForeground font-medium">
+              Enroll Class
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {/* FLOATING "+" BUTTON */}
+      <TouchableOpacity
+        onPress={() => setMenuVisible(!menuVisible)}
+        className="absolute bottom-6 right-6 bg-primary w-16 h-16 rounded-full items-center justify-center shadow-lg"
+      >
+        <Ionicons name="add" size={34} color="white" />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
