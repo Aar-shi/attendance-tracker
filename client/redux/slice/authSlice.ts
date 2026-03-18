@@ -83,7 +83,7 @@ const authSlice = createSlice({
     }),
       builder.addCase(checkAuth.fulfilled, (state, action) => {
         state.isCheckingAuth = false;
-        state.authUser = action.payload.user;
+        state.authUser = action.payload?.user;
       }),
       builder.addCase(checkAuth.rejected, (state, action) => {
         state.isCheckingAuth = false;

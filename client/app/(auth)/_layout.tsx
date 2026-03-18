@@ -16,7 +16,7 @@ export default function AuthLayout() {
         }}
       />
 
-      <Tabs.Screen
+      <Stack.Screen
         name="signUp"
         options={{
           title: "Register",
