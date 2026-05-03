@@ -7,17 +7,22 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
-import { useAppDispatch } from "@/redux/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import { loginUser } from "@/redux/slice/authSlice";
 import { loginData } from "@/types/authForms";
+import { Ionicons } from "@expo/vector-icons";
 
 const Login = () => {
   const dispatch = useAppDispatch();
+  const { isLoggingIn } = useAppSelector((state) => state.auth);
   const [id, setId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleLogin = async () => {
     const data: loginData = {
@@ -29,90 +34,128 @@ const Login = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-background">
-      <ScrollView
-        contentContainerStyle={{ padding: 24 }}
-        showsVerticalScrollIndicator={false}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        className="flex-1"
       >
-        {/* Profile Image */}
-        <View className="items-center mt-10 mb-10">
-          <View className="p-1 rounded-full bg-primary/20">
-            <Image
-              source={require("../../assets/images/donald.png")}
-              className="w-36 h-36 rounded-full border-4 border-primary"
-              resizeMode="cover"
-            />
+        <ScrollView
+          contentContainerStyle={{ padding: 24, flexGrow: 1 }}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Header Section */}
+          <View className="items-center mt-12 mb-12">
+            <View className="relative">
+              <View className="p-1 rounded-full bg-primary/10 shadow-sm">
+                <Image
+                  source={require("../../assets/images/donald.png")}
+                  className="w-32 h-32 rounded-full border-2 border-white shadow-lg"
+                  resizeMode="cover"
+                />
+              </View>
+              <View className="absolute bottom-0 right-0 bg-primary p-2 rounded-full border-2 border-white shadow-md">
+                <Ionicons name="person" size={16} color="white" />
+              </View>
+            </View>
+
+            <Text className="mt-6 text-2xl font-bold text-foreground tracking-tight">
+              Donald Trump
+            </Text>
+            <View className="bg-primary/10 px-3 py-1 rounded-full mt-2">
+              <Text className="text-primary text-xs font-semibold uppercase tracking-wider">
+                Student Portal
+              </Text>
+            </View>
           </View>
 
-          <Text className="mt-4 text-xl font-bold text-foreground">
-            Donald Trump
-          </Text>
-          <Text className="text-mutedForeground text-sm">Student Login</Text>
-        </View>
-
-        {/* Welcome Text */}
-        <View className="mb-8">
-          <Text className="text-3xl font-extrabold text-foreground">
-            Welcome Back
-          </Text>
-          <Text className="text-mutedForeground mt-2 text-base">
-            Log in to continue
-          </Text>
-        </View>
-
-        {/* Email Input */}
-        <View className="bg-card border border-border rounded-2xl px-4 py-4 mb-4">
-          <TextInput
-            onChangeText={setId}
-            placeholder="Enter your university roll/employee id"
-            placeholderTextColor="#6b7280"
-            className="text-foreground text-base"
-          />
-        </View>
-
-        {/* Password Input */}
-        <View className="bg-card border border-border rounded-2xl px-4 py-4 mb-4 flex-row items-center justify-between">
-          <TextInput
-            onChangeText={setPassword}
-            placeholder="Enter your password"
-            placeholderTextColor="#6b7280"
-            secureTextEntry={true}
-            className="flex-1 text-foreground text-base"
-          />
-          <Text className="ml-2 text-mutedForeground">👁️</Text>
-        </View>
-
-        {/* Remember Me */}
-        <View className="flex-row items-center mb-10">
-          <View className="w-5 h-5 rounded-full bg-primary mr-3" />
-          <Text className="text-mutedForeground">Remember me</Text>
-        </View>
-
-        {/* Sign In Button */}
-        <TouchableOpacity
-          onPress={handleLogin}
-          activeOpacity={0.85}
-          className="bg-primary py-4 rounded-2xl items-center shadow-md"
-        >
-          <Text className="text-primaryForeground text-lg font-bold">
-            Sign In
-          </Text>
-        </TouchableOpacity>
-
-        {/* Footer */}
-        <View className="items-center mt-8">
-          <Text className="text-mutedForeground">
-            Don’t have an account?{" "}
-            <Text
-              onPress={() => router.replace("/signUp")}
-              className="text-primary font-semibold"
-            >
-              Sign Up
+          {/* Welcome Text */}
+          <View className="mb-10">
+            <Text className="text-4xl font-black text-foreground">
+              Welcome Back
             </Text>
-          </Text>
-        </View>
-      </ScrollView>
+            <Text className="text-mutedForeground mt-2 text-lg font-medium opacity-80">
+              Please sign in to your account
+            </Text>
+          </View>
+
+          {/* Form Section */}
+          <View className="space-y-4">
+            {/* ID Input */}
+            <View className="bg-card border border-border/50 rounded-2xl px-5 py-4 flex-row items-center shadow-sm">
+              <Ionicons name="card-outline" size={20} color="#94a3b8" />
+              <TextInput
+                onChangeText={setId}
+                placeholder="University Roll / Employee ID"
+                placeholderTextColor="#94a3b8"
+                className="flex-1 text-foreground text-base ml-3 font-medium"
+              />
+            </View>
+
+            {/* Password Input */}
+            <View className="bg-card border border-border/50 rounded-2xl px-5 py-4 mt-4 flex-row items-center shadow-sm">
+              <Ionicons name="lock-closed-outline" size={20} color="#94a3b8" />
+              <TextInput
+                onChangeText={setPassword}
+                placeholder="Password"
+                placeholderTextColor="#94a3b8"
+                secureTextEntry={!showPassword}
+                className="flex-1 text-foreground text-base ml-3 font-medium"
+              />
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <Ionicons
+                  name={showPassword ? "eye-off-outline" : "eye-outline"}
+                  size={20}
+                  color="#94a3b8"
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {/* Remember Me & Forgot Password */}
+          <View className="flex-row items-center justify-between mt-6 mb-10 px-1">
+            <TouchableOpacity className="flex-row items-center">
+              <View className="w-5 h-5 rounded-md border border-primary/50 items-center justify-center bg-primary/5">
+                <View className="w-3 h-3 rounded-sm bg-primary" />
+              </View>
+              <Text className="text-mutedForeground ml-3 font-medium text-sm">
+                Remember me
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Text className="text-primary font-semibold text-sm">
+                Forgot Password?
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Sign In Button */}
+          <TouchableOpacity
+            onPress={handleLogin}
+            disabled={isLoggingIn}
+            activeOpacity={0.8}
+            className={`py-5 rounded-2xl items-center shadow-lg ${isLoggingIn ? "bg-primary/70" : "bg-primary shadow-primary/30"}`}
+          >
+            <Text className="text-primaryForeground text-lg font-bold tracking-wide">
+              {isLoggingIn ? "Logging in..." : "Sign In"}
+            </Text>
+          </TouchableOpacity>
+
+          {/* Footer */}
+          <View className="items-center mt-auto py-6">
+            <Text className="text-mutedForeground font-medium">
+              Don't have an account?{" "}
+              <Text
+                onPress={() => router.replace("/signUp")}
+                className="text-primary font-bold"
+              >
+                Sign Up
+              </Text>
+            </Text>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
 export default Login;
+

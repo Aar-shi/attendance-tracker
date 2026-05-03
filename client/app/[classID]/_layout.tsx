@@ -37,7 +37,9 @@ export default function InsideClassLayout() {
             display: "none",
           },
           tabBarItemStyle: {
-            width: "auto",
+            borderRadius: 16,
+            overflow: "hidden",
+            marginHorizontal: 5,
           },
         }}
       >

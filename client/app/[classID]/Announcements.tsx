@@ -7,50 +7,48 @@ import {
   FlatList,
   Image,
   TextInput,
-  Button,
   TouchableOpacity,
-  TouchableHighlight,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import Ionicons from "@expo/vector-icons/Ionicons";
-
+import { Ionicons } from "@expo/vector-icons";
 import { Announcement } from "@/types/announcement";
 import { useLocalSearchParams } from "expo-router";
+import AnnouncementCard from "@/components/AnnouncementCard";
 
 export default function Announcements() {
-  //extract class id from params
-  const { classID } = useLocalSearchParams<{ classID: string }>();
+  const { classID, className } = useLocalSearchParams<{ classID: string, className: string }>();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [announcementData, setAnnouncementData] = useState<Announcement[]>([
     {
       id: 1,
-      senderName: "John Doe",
-      senderProfession: "Professor",
+      senderName: "Dr. John Doe",
+      senderProfession: "Department Head",
       senderProfilePic: require("@/assets/images/profile_pic.png"),
       message:
-        "Don't forget that the mid-term project submission deadline has been extended to next Friday. Please check the updated guidelines in the resources folder.",
-      timestamp: "10:42AM",
+        "Attention all students! The mid-term project submission deadline has been extended to next Friday. Please review the updated rubrics on the dashboard.",
+      timestamp: "10:42 AM",
     },
     {
       id: 2,
-      senderName: "John Doe",
-      senderProfession: "Professor",
-      senderProfilePic: require("@/assets/images/profile_pic.png"),
+      senderName: "Prof. Moumita Sengupta",
+      senderProfession: "Lecturer",
+      senderProfilePic: require("@/assets/images/donald.png"),
       message:
-        "Don't forget that the mid-term project submission deadline has been extended to next Friday. Please check the updated guidelines in the resources folder.",
-      timestamp: "10:42AM",
+        "The lecture for 'Digital Communication' today will be moved to the virtual auditorium. Please use the link provided in the course syllabus.",
+      timestamp: "09:15 AM",
     },
     {
       id: 3,
-      senderName: "John Doe",
-      senderProfession: "Professor",
+      senderName: "Admin Office",
+      senderProfession: "Administration",
       senderProfilePic: require("@/assets/images/profile_pic.png"),
       message:
-        "Don't forget that the mid-term project submission deadline has been extended to next Friday. Please check the updated guidelines in the resources folder.",
-      timestamp: "10:42AM",
+        "Campus maintenance will be active this weekend. Library services will be restricted on Sunday between 10 AM and 4 PM.",
+      timestamp: "Yesterday",
     },
   ]);
 
@@ -61,92 +59,98 @@ export default function Announcements() {
     setModalVisible(false);
   };
 
-  //TODO - MODAL FOR ADDING ANNOUNCEMENTS
-
   return (
-    <SafeAreaView className="w-full flex-1 bg-background">
-      <View className="w-full h-full items-center">
+    <SafeAreaView edges={['bottom']} className="flex-1 bg-background">
+      <View className="flex-1 px-6">
         <Modal
-          animationType="slide"
+          animationType="fade"
           transparent={true}
           visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(false);
-          }}
+          onRequestClose={() => setModalVisible(false)}
         >
-          <View className="modal-page flex-1 w-full justify-center items-center ">
-            <View className="modal-container w-[80%] p-5 elevation-lg rounded-xl bg-white">
-              <View className="modal-header w-full flex-row justify-between ">
-                <Text className="font-bold text-xl"> New Announcement </Text>
-                <Ionicons
-                  onPress={handleModalClose}
-                  name="close-outline"
-                  size={24}
-                />
-              </View>
-              {/* Title section */}
-              <View className="title w-full">
-                <Text className="mt-8 mb-2 text-mutedForeground">Title</Text>
-                <View className="w-full min-h-12 flex-row items-center border border-border rounded-lg px-2">
-                  <Ionicons
-                    className="w-[10%]"
-                    size={20}
-                    name="chatbox-outline"
-                    color={"#888"}
-                  />
-                  <TextInput
-                    multiline
-                    editable
-                    numberOfLines={3}
-                    placeholder="Announcement Title"
-                    className=" w-[90%] placeholder:text-mutedForeground/50 p-2 rounded-lg"
-                  />
+          <View className="flex-1 justify-center items-center bg-black/60 px-6">
+            <KeyboardAvoidingView 
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+              className="w-full"
+            >
+              <View className="bg-white w-full rounded-[36px] overflow-hidden shadow-2xl">
+                <View className="bg-primary/5 p-8 border-b border-slate-100 flex-row justify-between items-center">
+                  <View>
+                    <Text className="text-2xl font-black text-foreground">New Post</Text>
+                    <Text className="text-slate-400 font-bold text-xs uppercase tracking-widest mt-1">Class Announcement</Text>
+                  </View>
+                  <TouchableOpacity onPress={handleModalClose} className="bg-white p-2 rounded-xl shadow-sm border border-slate-100">
+                    <Ionicons name="close" size={24} color="#0f172a" />
+                  </TouchableOpacity>
+                </View>
+
+                <View className="p-8">
+                  <View className="mb-6">
+                    <Text className="text-sm font-bold text-slate-500 mb-2 ml-1">Subject</Text>
+                    <View className="bg-slate-50 border border-slate-100 rounded-2xl px-4 py-4 flex-row items-center">
+                      <Ionicons name="bookmark-outline" size={20} color="#94a3b8" />
+                      <TextInput
+                        placeholder="What's this about?"
+                        placeholderTextColor="#94a3b8"
+                        className="flex-1 text-foreground font-semibold ml-3"
+                      />
+                    </View>
+                  </View>
+
+                  <View className="mb-8">
+                    <Text className="text-sm font-bold text-slate-500 mb-2 ml-1">Message Body</Text>
+                    <View className="bg-slate-50 border border-slate-100 rounded-[24px] px-4 py-4 min-h-[160px]">
+                      <TextInput
+                        multiline
+                        placeholder="Write your announcement here..."
+                        placeholderTextColor="#94a3b8"
+                        className="text-foreground font-medium leading-6"
+                      />
+                    </View>
+                  </View>
+
+                  <TouchableOpacity 
+                    activeOpacity={0.8}
+                    className="bg-primary py-5 rounded-2xl items-center shadow-lg shadow-primary/30"
+                  >
+                    <Text className="text-primaryForeground text-lg font-black tracking-wide">
+                      Publish Announcement
+                    </Text>
+                  </TouchableOpacity>
                 </View>
               </View>
-              {/* Message Section */}
-              <View className="message w-full ">
-                <Text className="mt-2 mb-2 text-mutedForeground">Message</Text>
-                <View className="w-full min-h-24 border border-border rounded-lg">
-                  <TextInput
-                    multiline
-                    editable
-                    numberOfLines={8}
-                    placeholder="What would you like to share with your class ?"
-                    className="w-full placeholder:text-mutedForeground/50 px-4 rounded-lg"
-                  />
-                </View>
-              </View>
-              {/* Submit Modal Button */}
-              <TouchableOpacity className="submit-button-container  bg-primary w-full elevation-lg border border-border mt-4 p-5 rounded-lg">
-                <Text className="text-center text-background">
-                  Post Announcement
-                </Text>
-              </TouchableOpacity>
-            </View>
+            </KeyboardAvoidingView>
           </View>
         </Modal>
 
-        {/* Create Announcement Button */}
-        <Pressable
+        {/* Create Announcement Action */}
+        <TouchableOpacity
           onPress={handleOnPressAddAnnouncements}
-          className="bg-primary/30 w-[90%] border-2 border-dashed border-primary/40 p-5 mt-2 flex justify-center items-center rounded-xl active:bg-primary/50"
+          activeOpacity={0.9}
+          className="mt-6 mb-8"
         >
-          <View className="flex-row justify-center items-center gap-2">
-            <Text className="font-bold text-primary text-3xl">+</Text>
-            <Text className="font-bold text-primary">
-              Create New Announcement
-            </Text>
+          <View className="bg-white border-2 border-dashed border-primary/30 p-8 items-center rounded-[32px] shadow-sm">
+            <View className="bg-primary/10 w-12 h-12 rounded-2xl items-center justify-center mb-3">
+              <Ionicons name="megaphone" size={24} color="#059669" />
+            </View>
+            <Text className="font-black text-primary text-lg">Share with the class</Text>
+            <Text className="text-slate-400 font-bold text-xs mt-1 opacity-70">Tap to create a new announcement</Text>
           </View>
-        </Pressable>
+        </TouchableOpacity>
 
         {/* Announcements List */}
         <FlatList
-          className="w-full"
-          contentContainerClassName="items-center"
-          contentContainerStyle={{ paddingBottom: 30 }}
+          className="flex-1"
+          contentContainerStyle={{ paddingBottom: 100 }}
           keyExtractor={(item) => item.id.toString()}
           showsVerticalScrollIndicator={false}
           data={announcementData}
+          ListHeaderComponent={() => (
+            <View className="mb-6 flex-row items-center">
+              <Text className="text-sm font-black text-slate-400 uppercase tracking-[3px]">Recent Updates</Text>
+              <View className="flex-1 h-[1px] bg-slate-100 ml-4" />
+            </View>
+          )}
           renderItem={({ item }) => <AnnouncementCard item={item} />}
         />
       </View>
@@ -154,31 +158,3 @@ export default function Announcements() {
   );
 }
 
-function AnnouncementCard({ item }: { item: Announcement }) {
-  return (
-    <View className="announcement-container shadow-sm elevation-sm p-5 w-[90%] min-h-[30%] mt-5 bg-white rounded-xl">
-      <View className="announcement-header w-full flex-row items-center gap-4">
-        <Image
-          className="object-cover h-16 w-16 rounded-full"
-          source={item.senderProfilePic}
-        />
-        <View className="sender-info">
-          <Text className="sender-name font-bold text-xl">
-            {item.senderName}
-          </Text>
-          <Text className="sender-profession text-mutedForeground/60 text-sm">
-            {item.senderProfession}
-          </Text>
-        </View>
-      </View>
-      <View className="w-full h-fit my-3">
-        <Text className="p-2 text-justify">{item.message}</Text>
-      </View>
-      <View className="w-full items-start p-2 ">
-        <Text className="text-sm text-mutedForeground/60">
-          {item.timestamp}
-        </Text>
-      </View>
-    </View>
-  );
-}

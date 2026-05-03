@@ -2,35 +2,47 @@ import { axiosInstance } from "@/lib/axios";
 import { clearToken, saveToken } from "@/services/tokenService";
 import { loginData } from "@/types/authForms";
 import { User } from "@/types/userType";
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  isRejectedWithValue,
+} from "@reduxjs/toolkit";
 
 //api to check authentication
-export const checkAuth = createAsyncThunk("user/checkAuth", async () => {
-  try {
-    const response = await axiosInstance.get("/auth/checkAuth");
-    return response.data;
-  } catch (error) {
-    console.log("Error in checkAuth", error);
-  }
-});
+export const checkAuth = createAsyncThunk(
+  "user/checkAuth",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get("/auth/checkAuth");
+      return response.data;
+    } catch (error: any) {
+      console.log("Error in checkAuth", error);
+      return rejectWithValue(error.response?.data || "Check auth failed");
+    }
+  },
+);
 
 //api to sign up user
-export const signUpUser = createAsyncThunk("user/signUp", async (data) => {
-  try {
-    const response = await axiosInstance.post("/auth/register", data);
-    //toast success
-    console.log("Sign up response", response.data);
-    return response.data;
-  } catch (error) {
-    //toast error
-    console.log("Error in sign up", error);
-  }
-});
+export const signUpUser = createAsyncThunk(
+  "user/signUp",
+  async (data: any, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post("/auth/register", data);
+      //toast success
+      console.log("Sign up response", response.data);
+      return response.data;
+    } catch (error: any) {
+      //toast error
+      console.log("Error in sign up", error);
+      return rejectWithValue(error.response?.data || "Sign up failed");
+    }
+  },
+);
 
 //api to login user
 export const loginUser = createAsyncThunk(
   "user/login",
-  async (data: loginData) => {
+  async (data: loginData, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/auth/login", data);
       //toast success
@@ -40,19 +52,24 @@ export const loginUser = createAsyncThunk(
     } catch (error: any) {
       //toast error
       console.log("Error in login", error);
+      return rejectWithValue(error.response?.data || "Login failed");
     }
   },
 );
 
 //api to logout
-export const logoutUser = createAsyncThunk("user/logout", async () => {
-  try {
-    await clearToken();
-    console.log("User logged out successfully");
-  } catch (error) {
-    console.log("Error in logout", error);
-  }
-});
+export const logoutUser = createAsyncThunk(
+  "user/logout",
+  async (_, { rejectWithValue }) => {
+    try {
+      await clearToken();
+      console.log("User logged out successfully");
+    } catch (error: any) {
+      console.log("Error in logout", error);
+      return rejectWithValue(error.response?.data || "Logout failed");
+    }
+  },
+);
 
 interface AuthState {
   authUser: User | null;

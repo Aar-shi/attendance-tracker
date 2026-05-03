@@ -2,50 +2,51 @@
 
 export const colors = {
   /* ---------- BASE ---------- */
-  background: "hsl(138.2, 65%, 94.8%)",
-  foreground: "hsl(138.2, 3.3%, 7.4%)",
+  background: "hsl(210, 40%, 98%)", // Clean slate white
+  foreground: "hsl(222.2, 84%, 4.9%)", // Deep navy/slate
 
-  card: "hsl(138.2, 32.5%, 94.8%)",
-  cardForeground: "hsl(138.2, 3.3%, 12.4%)",
+  card: "hsl(0, 0%, 100%)", // Pure white for cards
+  cardForeground: "hsl(222.2, 84%, 4.9%)",
 
-  popover: "hsl(138.2, 65%, 97.4%)",
-  popoverForeground: "hsl(138.2, 98.3%, 4.8%)",
+  popover: "hsl(0, 0%, 100%)",
+  popoverForeground: "hsl(222.2, 84%, 4.9%)",
 
-  primary: "hsl(138.2, 87.4%, 28%)",
-  primaryForeground: "hsl(0, 0%, 100%)",
+  primary: "hsl(142, 76%, 36%)", // Vibrant emerald green
+  primaryForeground: "hsl(355.7, 100%, 97.3%)",
 
-  secondary: "hsl(138.2, 23%, 79.6%)",
-  secondaryForeground: "hsl(0, 0%, 0%)",
+  secondary: "hsl(210, 40%, 96.1%)",
+  secondaryForeground: "hsl(222.2, 47.4%, 11.2%)",
 
-  muted: "hsl(176.2, 23%, 89.8%)",
-  mutedForeground: "hsl(138.2, 3.3%, 37.4%)",
+  muted: "hsl(210, 40%, 96.1%)",
+  mutedForeground: "hsl(215.4, 16.3%, 46.9%)",
 
-  accent: "hsl(176.2, 23%, 84.8%)",
-  accentForeground: "hsl(138.2, 3.3%, 12.4%)",
+  accent: "hsl(210, 40%, 96.1%)",
+  accentForeground: "hsl(222.2, 47.4%, 11.2%)",
 
-  destructive: "hsl(0, 82.5%, 39.6%)",
-  destructiveForeground: "hsl(138.2, 3.3%, 94.8%)",
+  destructive: "hsl(0, 84.2%, 60.2%)",
+  destructiveForeground: "hsl(210, 40%, 98%)",
 
-  border: "hsl(138.2, 26.5%, 65.4%)",
-  input: "hsl(138.2, 26.5%, 33.4%)",
-  ring: "hsl(138.2, 88.7%, 45.3%)",
+  border: "hsl(214.3, 31.8%, 91.4%)",
+  input: "hsl(214.3, 31.8%, 91.4%)",
+  ring: "hsl(142, 76%, 36%)",
 
   /* ---------- CHART COLORS ---------- */
-  chart1: "hsl(195.9, 72%, 53%)",
-  chart2: "hsl(267.9, 72%, 53%)",
-  chart3: "hsl(339.9, 72%, 53%)",
-  chart4: "hsl(51.9, 72%, 53%)",
-  chart5: "hsl(123.9, 72%, 53%)",
+  chart1: "hsl(142, 76%, 36%)", // Emerald
+  chart2: "hsl(173, 58%, 39%)", // Teal
+  chart3: "hsl(197, 37%, 24%)", // Navy
+  chart4: "hsl(43, 74%, 66%)", // Amber
+  chart5: "hsl(27, 87%, 67%)", // Orange
 
   /* ---------- SIDEBAR ---------- */
   sidebar: {
-    background: "hsl(138, 65%, 90%)",
-    foreground: "hsl(138, 3%, 7%)",
-    primary: "hsl(138, 87%, 25%)",
+    background: "hsl(222.2, 84%, 4.9%)",
+    foreground: "hsl(210, 40%, 98%)",
+    primary: "hsl(142, 76%, 36%)",
     primaryForeground: "hsl(0, 0%, 100%)",
-    accent: "hsl(176, 23%, 81%)",
-    accentForeground: "hsl(0, 0%, 0%)",
-    border: "hsl(138, 27%, 62%)",
-    ring: "hsl(128, 98%, 45%)",
+    accent: "hsl(217.2, 32.6%, 17.5%)",
+    accentForeground: "hsl(210, 40%, 98%)",
+    border: "hsl(217.2, 32.6%, 17.5%)",
+    ring: "hsl(142, 76%, 36%)",
   },
 };
+

@@ -1,16 +1,29 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, Platform } from "react-native";
 import React from "react";
-import { Redirect, router, Tabs, usePathname } from "expo-router";
+import { Tabs, usePathname } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/theme/colors";
-import { useAppSelector } from "@/redux/hooks/hooks";
 
 export default function MainTabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "#09862f",
-        tabBarInactiveTintColor: "#5c635e",
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: "#94a3b8",
+        tabBarStyle: {
+          backgroundColor: "#ffffff",
+          borderTopWidth: 0,
+          elevation: 0,
+          shadowOpacity: 0,
+          height: Platform.OS === 'ios' ? 90 : 70,
+          paddingBottom: Platform.OS === 'ios' ? 30 : 12,
+          paddingTop: 12,
+        },
+        tabBarLabelStyle: {
+          fontWeight: '700',
+          fontSize: 11,
+          marginTop: 2,
+        },
       }}
     >
       <Tabs.Screen
@@ -18,8 +31,8 @@ export default function MainTabLayout() {
         options={{
           title: "Home",
           headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" size={size} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? "home" : "home-outline"} size={24} color={color} />
           ),
         }}
       />
@@ -36,8 +49,8 @@ export default function MainTabLayout() {
         options={{
           title: "Profile",
           headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person-outline" size={size} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? "person" : "person-outline"} size={24} color={color} />
           ),
         }}
       />
@@ -45,52 +58,54 @@ export default function MainTabLayout() {
   );
 }
 
-//Class tab button
+// Class tab button (Center FAB)
 const SpecialTabButton = ({ onPress }: any) => {
   const pathName = usePathname();
-  const focused = pathName.startsWith("/ClassScreen");
+  const focused = pathName.includes("ClassScreen") || pathName.includes("[classID]");
 
   return (
-    <View style={{ flex: 1, alignItems: "center" }}>
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={0.9}
+      style={{
+        top: -24,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <View
         style={{
-          position: "absolute",
-          top: -30,
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 4,
-          },
+          width: 64,
+          height: 64,
+          borderRadius: 24,
+          backgroundColor: focused ? colors.primary : "#0f172a",
+          justifyContent: "center",
+          alignItems: "center",
+          shadowColor: focused ? colors.primary : "#000",
+          shadowOffset: { width: 0, height: 10 },
           shadowOpacity: 0.3,
-          shadowRadius: 8,
-          elevation: 8,
+          shadowRadius: 15,
+          elevation: 10,
+          transform: [{ rotate: '0deg' }]
         }}
       >
-        <Pressable
-          onPress={onPress}
-          style={{
-            height: 60,
-            width: 60,
-            borderRadius: 35,
-            backgroundColor: focused ? colors.primary : colors.mutedForeground,
-            alignItems: "center",
-            justifyContent: "center",
-            elevation: 5,
-          }}
-        >
-          <Ionicons name="book-outline" size={32} color="white" />
-        </Pressable>
+        <Ionicons name="journal" size={28} color="white" />
       </View>
-
       <Text
         style={{
-          marginTop: 35,
-          fontSize: 12,
-          color: focused ? colors.primary : colors.mutedForeground,
+          fontSize: 11,
+          fontWeight: '800',
+          color: focused ? colors.primary : "#94a3b8",
+          marginTop: 8,
+          textTransform: 'uppercase',
+          letterSpacing: 0.5
         }}
       >
         Classes
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 };
+
+import { TouchableOpacity } from "react-native";
+

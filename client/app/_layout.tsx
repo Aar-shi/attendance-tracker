@@ -68,8 +68,13 @@ export const RootNavigator = () => {
               headerShown: true,
               title: params?.className ?? "Class",
               headerShadowVisible: false,
+              headerTitleStyle: {
+                fontWeight: '900',
+                fontSize: 20,
+                color: "#0f172a",
+              },
               headerStyle: {
-                backgroundColor: "#e9faee",
+                backgroundColor: "#ffffff",
               },
 
               headerLeft: () => {
@@ -78,9 +83,9 @@ export const RootNavigator = () => {
                     onPress={() => {
                       router.back();
                     }}
-                    className="text-center p-2 rounded-full bg-white  mr-4"
+                    className="p-2 rounded-xl bg-slate-50 mr-4 border border-slate-100"
                   >
-                    <Ionicons name="arrow-back-outline" size={20} />
+                    <Ionicons name="chevron-back" size={20} color="#0f172a" />
                   </TouchableOpacity>
                 );
               },
