@@ -69,7 +69,7 @@ export const RootNavigator = () => {
               title: params?.className ?? "Class",
               headerShadowVisible: false,
               headerTitleStyle: {
-                fontWeight: '900',
+                fontWeight: "900",
                 fontSize: 20,
                 color: "#0f172a",
               },

@@ -15,12 +15,12 @@ export default function MainTabLayout() {
           borderTopWidth: 0,
           elevation: 0,
           shadowOpacity: 0,
-          height: Platform.OS === 'ios' ? 90 : 70,
-          paddingBottom: Platform.OS === 'ios' ? 30 : 12,
+          height: Platform.OS === "ios" ? 90 : 70,
+          paddingBottom: Platform.OS === "ios" ? 30 : 12,
           paddingTop: 12,
         },
         tabBarLabelStyle: {
-          fontWeight: '700',
+          fontWeight: "700",
           fontSize: 11,
           marginTop: 2,
         },
@@ -32,7 +32,11 @@ export default function MainTabLayout() {
           title: "Home",
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? "home" : "home-outline"} size={24} color={color} />
+            <Ionicons
+              name={focused ? "home" : "home-outline"}
+              size={24}
+              color={color}
+            />
           ),
         }}
       />
@@ -50,7 +54,11 @@ export default function MainTabLayout() {
           title: "Profile",
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? "person" : "person-outline"} size={24} color={color} />
+            <Ionicons
+              name={focused ? "person" : "person-outline"}
+              size={24}
+              color={color}
+            />
           ),
         }}
       />
@@ -61,7 +69,8 @@ export default function MainTabLayout() {
 // Class tab button (Center FAB)
 const SpecialTabButton = ({ onPress }: any) => {
   const pathName = usePathname();
-  const focused = pathName.includes("ClassScreen") || pathName.includes("[classID]");
+  const focused =
+    pathName.includes("ClassScreen") || pathName.includes("[classID]");
 
   return (
     <TouchableOpacity
@@ -86,7 +95,7 @@ const SpecialTabButton = ({ onPress }: any) => {
           shadowOpacity: 0.3,
           shadowRadius: 15,
           elevation: 10,
-          transform: [{ rotate: '0deg' }]
+          transform: [{ rotate: "0deg" }],
         }}
       >
         <Ionicons name="journal" size={28} color="white" />
@@ -94,11 +103,11 @@ const SpecialTabButton = ({ onPress }: any) => {
       <Text
         style={{
           fontSize: 11,
-          fontWeight: '800',
+          fontWeight: "800",
           color: focused ? colors.primary : "#94a3b8",
           marginTop: 8,
-          textTransform: 'uppercase',
-          letterSpacing: 0.5
+          textTransform: "uppercase",
+          letterSpacing: 0.5,
         }}
       >
         Classes
@@ -108,4 +117,3 @@ const SpecialTabButton = ({ onPress }: any) => {
 };
 
 import { TouchableOpacity } from "react-native";
-

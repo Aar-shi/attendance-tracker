@@ -5,9 +5,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import { fetchClassrooms } from "@/redux/slice/classroomSlice";
 import { Ionicons } from "@expo/vector-icons";
+import { User } from "@/types/userType";
 
 const Index = () => {
-  const currentUser = useAppSelector((state) => state.auth.authUser);
+  const currentUser: User | null = useAppSelector(
+    (state) => state.auth.authUser,
+  );
   const classCount = useAppSelector((state) => state.classroom.classCount);
   const dispatch = useAppDispatch();
   const handleClassFetch = async () => {
