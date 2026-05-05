@@ -7,6 +7,7 @@ import { store } from "@/redux/store/store";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import { useEffect } from "react";
 import { checkAuth } from "@/redux/slice/authSlice";
+import Toast from "react-native-toast-message";
 
 export default function RootLayout() {
   return (
@@ -14,6 +15,7 @@ export default function RootLayout() {
       <Provider store={store}>
         <StatusBar barStyle={"default"} />
         <RootNavigator />
+        <Toast />
       </Provider>
     </SafeAreaProvider>
   );

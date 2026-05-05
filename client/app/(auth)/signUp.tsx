@@ -17,12 +17,26 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import { signUpUser } from "@/redux/slice/authSlice";
 
 const departments = [
-  "Computer Science (CSE)",
-  "Information Technology (IT)",
-  "Electronics & Communication (ECE)",
-  "Mechanical Engineering",
-  "Civil Engineering",
-  "Food Technology",
+  {
+    name: "Computer Science (CSE)",
+    value: "CSE",
+  },
+  {
+    name: "Information Technology (IT)",
+    value: "IT",
+  },
+  {
+    name: "Electronics & Communication (ECE)",
+    value: "ECE",
+  },
+  {
+    name: "Mechanical Engineering",
+    value: "ME",
+  },
+  {
+    name: "Civil Engineering",
+    value: "CE",
+  },
 ];
 
 const roles = ["Student", "Teacher"];
@@ -45,13 +59,16 @@ const SignUp = () => {
   const handleSignUp = async () => {
     const data = {
       name,
-      role: role.toLowerCase(),
+      role: role.toUpperCase(),
       department: department !== "Select Department" ? department : "",
       institutionId: role === "Teacher" ? id : rollNo,
       section,
       password,
     };
-    await dispatch(signUpUser(data));
+    const result = await dispatch(signUpUser(data));
+    if (signUpUser.fulfilled.match(result)) {
+      router.replace("/login");
+    }
   };
 
   return (
@@ -174,14 +191,25 @@ const SignUp = () => {
                 </View>
 
                 {/* Department */}
-                <View className="bg-card border border-border/50 rounded-2xl px-5 py-4 flex-row items-center shadow-sm mb-4">
-                  <Ionicons name="business-outline" size={20} color="#94a3b8" />
-                  <TextInput
-                    placeholder="Department"
-                    placeholderTextColor="#94a3b8"
-                    className="flex-1 text-foreground text-base ml-3 font-medium"
-                  />
-                </View>
+                <TouchableOpacity
+                  className="bg-card border border-border/50 rounded-2xl px-5 py-4 flex-row items-center justify-between shadow-sm mb-4"
+                  onPress={() => setDeptModal(true)}
+                  activeOpacity={0.8}
+                >
+                  <View className="flex-row items-center">
+                    <Ionicons
+                      name="business-outline"
+                      size={20}
+                      color="#94a3b8"
+                    />
+                    <Text
+                      className={`text-base ml-3 font-medium ${department === "Select Department" ? "text-slate-400" : "text-foreground"}`}
+                    >
+                      {department}
+                    </Text>
+                  </View>
+                  <Ionicons name="chevron-down" size={18} color="#94a3b8" />
+                </TouchableOpacity>
               </View>
             )}
 
@@ -257,18 +285,18 @@ const SignUp = () => {
               {departments.map((item, index) => (
                 <TouchableOpacity
                   key={index}
-                  className={`py-4 px-2 rounded-xl flex-row items-center justify-between ${department === item ? "bg-primary/10" : ""}`}
+                  className={`py-4 px-2 rounded-xl flex-row items-center justify-between ${department === item.value ? "bg-primary/10" : ""}`}
                   onPress={() => {
-                    setDepartment(item);
+                    setDepartment(item.value);
                     setDeptModal(false);
                   }}
                 >
                   <Text
-                    className={`text-base ${department === item ? "text-primary font-bold" : "text-foreground font-medium"}`}
+                    className={`text-base ${department === item.value ? "text-primary font-bold" : "text-foreground font-medium"}`}
                   >
-                    {item}
+                    {item.name}
                   </Text>
-                  {department === item && (
+                  {department === item.value && (
                     <Ionicons name="checkmark" size={20} color="#059669" />
                   )}
                 </TouchableOpacity>

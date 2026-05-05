@@ -5,6 +5,10 @@ import { safeUser } from "../dto/safeUserDto.js";
 
 
 export const registerService = async (user) => {
+    if (user.role === "TEACHER") {
+        delete user.section;
+    }
+
     //encrypting password
     const salt = await bcrypt.genSalt(10);
     const hashedPass = await bcrypt.hash(user.password, salt);
