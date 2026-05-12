@@ -9,13 +9,61 @@ import { User } from "@/types/userType";
 
 export default function ProfileScreen() {
   const dispatch = useAppDispatch();
-  const isLoggedOut = useAppSelector((state) => state.auth.isLoggedOut);
+
+  const isLoggedOut = useAppSelector(
+    (state) => state.auth.isLoggedOut,
+  );
+
   const currentUser: User | null = useAppSelector(
     (state) => state.auth.authUser,
   );
 
+  /* ======================================================
+     ROLE
+  ====================================================== */
+
+  const role = currentUser?.role || "TEACHER";
+
+  /* ======================================================
+     DEFAULT STUDENT VALUES
+  ====================================================== */
+
+  let dummyName = "std-test";
+  let profileType = "Student ID";
+  let designationText = "Year 3";
+
+  let stat2Label = "Attendance";
+  let stat2Value = "85%";
+
+  let stat3Label = "Hours";
+  let stat3Value = "142";
+
+  let stat4Label = "Streak";
+  let stat4Value = "15";
+
+  /* ======================================================
+     TEACHER VALUES
+  ====================================================== */
+
+  if (role === "TEACHER") {
+    dummyName = "test";
+    
+    profileType = "Teacher ID";
+    designationText = "Assistant Professor";
+
+    stat2Label = "Total Subjects";
+    stat2Value = "6";
+
+    stat3Label = "Total Students";
+    stat3Value = "248";
+
+    stat4Label = "Attendance Rate";
+    stat4Value = "92%";
+  }
+
   const handleLogout = async () => {
     await dispatch(logoutUser());
+
     if (isLoggedOut) {
       router.replace("/login");
     }
@@ -24,18 +72,29 @@ export default function ProfileScreen() {
   return (
     <SafeAreaView edges={["top"]} className="flex-1 bg-background">
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        {/* Header Section */}
+        {/* ======================================================
+            HEADER SECTION
+        ====================================================== */}
+
         <View className="px-6 pt-6 pb-8 bg-white border-b border-slate-100 shadow-sm">
           <View className="flex-row justify-between items-center mb-10">
             <Text className="text-4xl font-black text-foreground">
               Profile <Text className="text-primary">.</Text>
             </Text>
+
             <TouchableOpacity className="bg-slate-50 p-3 rounded-2xl">
-              <Ionicons name="settings-outline" size={22} color="#475569" />
+              <Ionicons
+                name="settings-outline"
+                size={22}
+                color="#475569"
+              />
             </TouchableOpacity>
           </View>
 
-          {/* Profile Header Card */}
+          {/* ======================================================
+              PROFILE HEADER CARD
+          ====================================================== */}
+
           <View className="items-center">
             <View className="relative">
               <View className="p-1 rounded-[40px] bg-primary/10 shadow-sm">
@@ -44,6 +103,7 @@ export default function ProfileScreen() {
                   className="w-32 h-32 rounded-[36px] border-4 border-white"
                 />
               </View>
+
               <TouchableOpacity className="absolute bottom-1 right-1 bg-primary p-2.5 rounded-2xl border-4 border-white shadow-lg">
                 <Ionicons name="camera" size={18} color="white" />
               </TouchableOpacity>
@@ -51,53 +111,93 @@ export default function ProfileScreen() {
 
             <View className="items-center mt-6">
               <Text className="text-3xl font-black text-foreground">
-                {currentUser?.name}
+                {dummyName}
               </Text>
+
               <View className="flex-row items-center mt-1 bg-slate-50 px-3 py-1 rounded-full">
-                <Ionicons name="business-outline" size={14} color="#64748b" />
+                <Ionicons
+                  name="business-outline"
+                  size={14}
+                  color="#64748b"
+                />
+
                 <Text className="text-slate-500 font-bold text-xs ml-2 uppercase tracking-tight">
-                  {currentUser?.department} • Year 3
+                  {currentUser?.department} • {designationText}
                 </Text>
               </View>
+
               <Text className="text-slate-400 font-medium text-xs mt-2">
-                Student ID: {currentUser?.institutionId}
+                {profileType}: {currentUser?.institutionId}
               </Text>
             </View>
           </View>
         </View>
 
-        {/* Stats Grid */}
+        {/* ======================================================
+            STATS GRID
+        ====================================================== */}
+
         <View className="px-6 -mt-4">
           <View className="flex-row flex-wrap justify-between">
-            <StatCard icon="book" color="emerald" value="12" label="Classes" />
-            <StatCard icon="trending-up" color="blue" value="85%" label="Attendance" />
-            <StatCard icon="time" color="amber" value="142" label="Hours" />
-            <StatCard icon="flame" color="rose" value="15" label="Streak" />
+            <StatCard
+              icon="book"
+              color="emerald"
+              value="12"
+              label="Classes"
+            />
+
+            <StatCard
+              icon="trending-up"
+              color="blue"
+              value={stat2Value}
+              label={stat2Label}
+            />
+
+            <StatCard
+              icon="time"
+              color="amber"
+              value={stat3Value}
+              label={stat3Label}
+            />
+
+            <StatCard
+              icon="flame"
+              color="rose"
+              value={stat4Value}
+              label={stat4Label}
+            />
           </View>
         </View>
 
-        {/* Menu Section */}
+        {/* ======================================================
+            MENU SECTION
+        ====================================================== */}
+
         <View className="px-6 mt-8 mb-12">
-          <Text className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 ml-2">Account Settings</Text>
-          
-          <MenuButton 
-            icon="person-outline" 
-            label="Personal Details" 
-            onPress={() => {}} 
+          <Text className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 ml-2">
+            Account Settings
+          </Text>
+
+          <MenuButton
+            icon="person-outline"
+            label="Personal Details"
+            onPress={() => {}}
           />
-          <MenuButton 
-            icon="shield-checkmark-outline" 
-            label="Security & Privacy" 
-            onPress={() => {}} 
+
+          <MenuButton
+            icon="shield-checkmark-outline"
+            label="Security & Privacy"
+            onPress={() => {}}
           />
-          <MenuButton 
-            icon="notifications-outline" 
-            label="Notification Settings" 
-            onPress={() => {}} 
+
+          <MenuButton
+            icon="notifications-outline"
+            label="Notification Settings"
+            onPress={() => {}}
           />
-          
+
           <View className="h-[1px] bg-slate-100 my-6 mx-2" />
-          
+
           <TouchableOpacity
             onPress={handleLogout}
             activeOpacity={0.7}
@@ -105,11 +205,24 @@ export default function ProfileScreen() {
           >
             <View className="flex-row items-center">
               <View className="bg-rose-500/10 p-2 rounded-xl">
-                <Ionicons name="log-out" size={20} color="#e11d48" />
+                <Ionicons
+                  name="log-out"
+                  size={20}
+                  color="#e11d48"
+                />
               </View>
-              <Text className="ml-4 text-rose-600 font-black text-base">Sign Out</Text>
+
+              <Text className="ml-4 text-rose-600 font-black text-base">
+                Sign Out
+              </Text>
             </View>
-            <Ionicons name="chevron-forward" size={20} color="#e11d48" opacity={0.5} />
+
+            <Ionicons
+              name="chevron-forward"
+              size={20}
+              color="#e11d48"
+              opacity={0.5}
+            />
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -117,7 +230,10 @@ export default function ProfileScreen() {
   );
 }
 
-/* ---------- Reusable Stat Card ---------- */
+/* ======================================================
+   REUSABLE STAT CARD
+====================================================== */
+
 function StatCard({
   icon,
   value,
@@ -127,25 +243,52 @@ function StatCard({
   icon: keyof typeof Ionicons.glyphMap;
   value: string;
   label: string;
-  color: 'emerald' | 'blue' | 'amber' | 'rose';
+  color: "emerald" | "blue" | "amber" | "rose";
 }) {
   const colorMap = {
-    emerald: { bg: 'bg-emerald-50', icon: '#059669', tint: 'bg-emerald-500/10' },
-    blue: { bg: 'bg-blue-50', icon: '#2563eb', tint: 'bg-blue-500/10' },
-    amber: { bg: 'bg-amber-50', icon: '#d97706', tint: 'bg-amber-500/10' },
-    rose: { bg: 'bg-rose-50', icon: '#e11d48', tint: 'bg-rose-500/10' },
+    emerald: {
+      bg: "bg-emerald-50",
+      icon: "#059669",
+      tint: "bg-emerald-500/10",
+    },
+
+    blue: {
+      bg: "bg-blue-50",
+      icon: "#2563eb",
+      tint: "bg-blue-500/10",
+    },
+
+    amber: {
+      bg: "bg-amber-50",
+      icon: "#d97706",
+      tint: "bg-amber-500/10",
+    },
+
+    rose: {
+      bg: "bg-rose-50",
+      icon: "#e11d48",
+      tint: "bg-rose-500/10",
+    },
   };
 
   const style = colorMap[color];
 
   return (
     <View className="bg-white w-[48%] rounded-[28px] p-5 mb-4 border border-slate-100 shadow-sm">
-      <View className={`w-12 h-12 rounded-2xl ${style.tint} items-center justify-center mb-4`}>
-        <Ionicons name={icon as any} size={24} color={style.icon} />
+      <View
+        className={`w-12 h-12 rounded-2xl ${style.tint} items-center justify-center mb-4`}
+      >
+        <Ionicons
+          name={icon as any}
+          size={24}
+          color={style.icon}
+        />
       </View>
+
       <Text className="text-2xl font-black text-foreground">
         {value}
       </Text>
+
       <Text className="text-slate-400 font-bold text-xs mt-1">
         {label}
       </Text>
@@ -153,30 +296,44 @@ function StatCard({
   );
 }
 
-/* ---------- Reusable Menu Button ---------- */
-function MenuButton({ 
-  icon, 
-  label, 
-  onPress 
-}: { 
-  icon: keyof typeof Ionicons.glyphMap; 
-  label: string; 
+/* ======================================================
+   REUSABLE MENU BUTTON
+====================================================== */
+
+function MenuButton({
+  icon,
+  label,
+  onPress,
+}: {
+  icon: keyof typeof Ionicons.glyphMap;
+  label: string;
   onPress: () => void;
 }) {
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.6}
       className="flex-row items-center justify-between bg-white px-6 py-5 rounded-[24px] border border-slate-100 shadow-sm mb-4"
     >
       <View className="flex-row items-center">
         <View className="bg-slate-50 p-2 rounded-xl">
-          <Ionicons name={icon as any} size={20} color="#475569" />
+          <Ionicons
+            name={icon as any}
+            size={20}
+            color="#475569"
+          />
         </View>
-        <Text className="ml-4 text-slate-700 font-bold text-base">{label}</Text>
+
+        <Text className="ml-4 text-slate-700 font-bold text-base">
+          {label}
+        </Text>
       </View>
-      <Ionicons name="chevron-forward" size={18} color="#cbd5e1" />
+
+      <Ionicons
+        name="chevron-forward"
+        size={18}
+        color="#cbd5e1"
+      />
     </TouchableOpacity>
   );
 }
-
