@@ -7,6 +7,7 @@ import {
   createAsyncThunk,
   isRejectedWithValue,
 } from "@reduxjs/toolkit";
+import Toast from "react-native-toast-message";
 
 //api to check authentication
 export const checkAuth = createAsyncThunk(
@@ -29,12 +30,23 @@ export const signUpUser = createAsyncThunk(
     try {
       const response = await axiosInstance.post("/auth/register", data);
       //toast success
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Account created successfully! 🎉",
+      });
       console.log("Sign up response", response.data);
       return response.data;
     } catch (error: any) {
       //toast error
+      const errorMessage = error.response?.data?.message || "Sign up failed";
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: errorMessage,
+      });
       console.log("Error in sign up", error);
-      return rejectWithValue(error.response?.data || "Sign up failed");
+      return rejectWithValue(errorMessage);
     }
   },
 );
@@ -46,13 +58,24 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await axiosInstance.post("/auth/login", data);
       //toast success
+      Toast.show({
+        type: "success",
+        text1: "Welcome Back!",
+        text2: "Login successful! 👋",
+      });
       await saveToken(response.data.jwt);
       console.log("Login response", response.data);
       return response.data;
     } catch (error: any) {
       //toast error
+      const errorMessage = error.response?.data?.message || "Login failed";
+      Toast.show({
+        type: "error",
+        text1: "Login Error",
+        text2: errorMessage,
+      });
       console.log("Error in login", error);
-      return rejectWithValue(error.response?.data || "Login failed");
+      return rejectWithValue(errorMessage);
     }
   },
 );
