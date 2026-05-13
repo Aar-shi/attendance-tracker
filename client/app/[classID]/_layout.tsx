@@ -61,6 +61,15 @@ export default function InsideClassLayout() {
             ),
           }}
         />
+        <Tabs.Screen
+          name="People"
+          options={{
+            headerShown: false,
+            tabBarLabel: ({ focused }) => (
+              <TabLabel focused={focused} title="People" />
+            ),
+          }}
+        />
       </Tabs>
     </View>
   );

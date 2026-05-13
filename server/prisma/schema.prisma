@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
@@ -30,12 +24,17 @@ model User {
 
   classrooms  Classroom[]
   userclasses UserClass[]
+
+  attendanceSessions AttendanceSession[]
 }
 
 //classroom info
 model Classroom {
-  classId String @id @default(uuid())
-  name    String
+  classId     String     @id @default(uuid())
+  subjectName String
+  subjectCode String
+  department  Department
+  section     Section
 
   teacherId String // FK column
   teacher   User   @relation(fields: [teacherId], references: [id])
@@ -60,9 +59,37 @@ model UserClass {
   class   Classroom @relation(fields: [classId], references: [classId])
 }
 
+// ----------------Sessions created on every click of teacher------------------ //
+model AttendanceSession {
+  sessionId  String        @id @default(uuid())
+  classId    String
+  teacherId  String // FK column
+  teacher    User          @relation(fields: [teacherId], references: [id])
+  date       DateTime      @default(now())
+  status     SessionStatus @default(INACTIVE)
+  otp        String
+  roomNumber String
+  attendance Attendance[]
+}
+
+// ----------------For marking attendance of each student class-wise------------ //
+model Attendance {
+  attendanceId String            @id @default(uuid())
+  studentId    String
+  sessionId    String
+  session      AttendanceSession @relation(fields: [sessionId], references: [sessionId])
+
+  @@unique([studentId, sessionId])
+}
+
 enum Role {
   STUDENT
   TEACHER
+}
+
+enum SessionStatus {
+  ACTIVE
+  INACTIVE
 }
 
 enum Department {

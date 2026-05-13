@@ -12,10 +12,15 @@ import * as LocalAuthentication from "expo-local-authentication";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppSelector } from "@/redux/hooks/hooks";
 import { User } from "@/types/userType";
+import { useGlobalSearchParams } from "expo-router";
 
 const rooms: string[] = ["Room 101", "Room 102", "Room 103", "Room 104"];
 
 const Attendance: React.FC = () => {
+  const { classID, className } = useGlobalSearchParams<{
+    classID: string;
+    className: string;
+  }>();
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [attendanceMarked, setAttendanceMarked] = useState<boolean>(false);
@@ -85,6 +90,16 @@ const Attendance: React.FC = () => {
         contentContainerStyle={{ paddingBottom: 40 }}
       >
         <View className="px-6 pt-6">
+          {/* Class Info */}
+          <View className="mb-6">
+            <Text className="text-3xl font-black text-foreground">
+              {className}
+            </Text>
+            <Text className="text-slate-400 font-bold text-xs uppercase tracking-widest mt-1">
+              ID: {classID}
+            </Text>
+          </View>
+
           {/* Header Card */}
           <View className="bg-slate-900 rounded-[40px] p-8 mb-10 shadow-2xl relative overflow-hidden">
             <View className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full -mr-10 -mt-10 blur-2xl" />

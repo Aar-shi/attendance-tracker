@@ -42,7 +42,7 @@ export const RootNavigator = () => {
       }}
     >
       {/* public routes */}
-      <Stack.Protected guard={false }>
+      <Stack.Protected guard={!authUser ? true : false}>
         <Stack.Screen
           name="(auth)"
           options={{
@@ -51,7 +51,7 @@ export const RootNavigator = () => {
         />
       </Stack.Protected>
       {/* protected routes */}
-      <Stack.Protected guard={ true }>
+      <Stack.Protected guard={authUser ? true : false}>
         <Stack.Screen
           name="(tabs)"
           options={{
